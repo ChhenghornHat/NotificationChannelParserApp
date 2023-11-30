@@ -1,0 +1,9 @@
+﻿{
+  "pages": [
+    {
+      "name": "Dashboard",
+      "icon": "mdi-chart-donut",
+      "url": "dashboard"
+    }
+  ]
+}
