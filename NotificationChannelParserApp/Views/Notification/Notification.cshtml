@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "Notification";
+}
+
+<!-- Content -->
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card">
+        <div class="card-loading" style="height: 600px">
+            <div aria-label="Loading..." role="status" class="loader">
+                <svg class="icon" viewBox="0 0 256 256">
+                    <line x1="128" y1="32" x2="128" y2="64" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                    <line x1="195.9" y1="60.1" x2="173.3" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                    <line x1="224" y1="128" x2="192" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                    <line x1="195.9" y1="195.9" x2="173.3" y2="173.3" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                    <line x1="128" y1="224" x2="128" y2="192" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                    <line x1="60.1" y1="195.9" x2="82.7" y2="173.3" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                    <line x1="32" y1="128" x2="64" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                    <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                </svg>
+                <span class="loading-text">Loading...</span>
+            </div>
+        </div>
+        <div class="card-datatable table-responsive text-nowrap">
+            <table id="notificationDatatable" class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Message</th>
+                        <th>Message Type</th>
+                        <th>Date & Time</th>
+                        <th>Send By</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="modal fade" id="modalNotification" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form class="modal-content" id="notificationFormData" method="post" autocomplete="off">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNotificationTitle">Send Message Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <div class="form-floating form-floating-outline">
+                                <select id="username" name="username" class="select2 form-select">
+                                    <option value="" disabled="disabled" selected="selected">Select a Username</option>
+                                    <option value="All">All</option>
+                                </select>
+                                <label for="username">Select a Username</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                            <div class="form-floating form-floating-outline">
+                                <textarea name="message" id="message" class="form-control" placeholder="Enter Message" required="required" style="height: 10vh"></textarea>
+                                <label for="message">Message</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                            <div class="form-floating form-floating-outline">
+                                <select id="messageType" name="messageType" class="select2 form-select" required="required">
+                                    <option value="" disabled="disabled" selected="selected">Select Message Type</option>
+                                    <option value="All">General Message</option>
+                                    <option value="Personal">Personal</option>
+                                </select>
+                                <label for="messageType">Select Message Type</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- / Content -->
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#notificationMainMenu').addClass('active');
+            
+            // Initial global variables
+            let datatable, listData = [];
+            const modalNotification = $('#modalNotification'),
+                notificationFormData = $('#notificationFormData'),
+                cardLoading = $('.card-loading');
+            
+            // Toastr notification
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "6000",
+                "showMethod": "fadeIn",
+            }
+            
+            // Get notifications
+            function getNotifications() {
+                $.ajax({
+                    url: '/Notification/GetAllNotification/',
+                    method: 'get',
+                    dataType: 'json',
+                    beforeSend: function() {
+                        cardLoading.removeClass('d-none');
+                    },
+                    success: function(response) {
+                        listData = [];
+                        listData = response;
+                        datatable.clear();
+                        datatable.rows.add(listData);
+                        datatable.draw();
+                    },
+                    complete: function() {
+                        cardLoading.addClass('d-none');
+                    }
+                });
+            }
+            getNotifications();
+            
+            // Format date & time
+            function formatDateTime(inputDateTime) {
+                const months = [
+                    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                ];
+            
+                const date = new Date(inputDateTime);
+                const day = date.getDate();
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                const seconds = date.getSeconds();
+            
+                return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+            }
+            
+            /* Initial Datatable */
+            datatable = $('#notificationDatatable').DataTable({
+                data: listData,
+                columns: [
+                    {data: "id",
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {data: "username"},
+                    {data: "message"},
+                    {data: "messageType",
+                        render: function(data) {
+                            return (data === 'All' ? 'General Message' : data);
+                        }
+                    },
+                    {data: "notificationDateTime",
+                        render: function(data) {
+                            return formatDateTime(data);
+                        }
+                    },
+                    {data: "sendBy"}
+                ],
+                scrollY: '46vh',
+                dom: '<"card-header d-flex border-top rounded-0 flex-wrap py-md-0"<"me-5 ms-n2 pe-5"f><"d-flex justify-content-start justify-content-md-end align-items-baseline"<"dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0 gap-3"lB>>>t<"row mx-1"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                language: {
+                    sLengthMenu: '_MENU_',
+                    search: '',
+                    searchPlaceholder: 'Search notifications',
+                    info: 'Displaying _START_ to _END_ of _TOTAL_ entries',
+                },
+                buttons: [
+                    {
+                        extend: 'collection',
+                        className: 'btn btn-label-secondary dropdown-toggle me-3 py-1',
+                        text: '<i class="mdi mdi-export-variant me-1"></i><span class="d-none d-sm-inline-block">Export</span>',
+                        buttons: [
+                            {
+                                extend: 'csv',
+                                text: '<i class="mdi mdi-file-document-outline me-1" ></i>Csv',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    // columns: [1, 2, 3, 4, 5]
+                                },
+                            },
+                            {
+                                extend: 'excel',
+                                text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    // columns: [1, 2, 3, 4, 5]
+                                },
+                            },
+                            {
+                                extend: 'copy',
+                                text: '<i class="mdi mdi-content-copy me-1"></i>Copy',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    // columns: [1, 2, 3, 4, 5]
+                                },
+                            }
+                        ],
+                    },
+                    {
+                        text: '<i class="mdi mdi-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add Message</span>',
+                        className: 'btn-add-message btn btn-primary',
+                        /*attr: {
+                            'data-bs-toggle': 'modal',
+                            'data-bs-target': '#modalVehicle'
+                        }*/
+                    }
+                ]
+            });
+            $('.dataTables_length').addClass('mt-0 mt-md-3');
+            $('.dt-action-buttons').addClass('pt-0');
+            $('.dataTables_filter .form-control').removeClass('form-control-sm');
+            $('.dataTables_length .form-select').removeClass('form-select-sm');
+            
+            // Show modal
+            $(document).on('click', '.btn-add-message', function() {
+                modalNotification.modal('show');
+                clearFormData();
+            });
+            
+            // Pass data to notification controller
+            notificationFormData.submit(function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                
+                $.ajax({
+                    url: '/Notification/SendMessage',
+                    method: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.statusCode === 200) {
+                            getNotifications();
+                            toastr.success(response.statusMessage);
+                            clearFormData();
+                            modalNotification.modal('hide');
+                        } else {
+                            toastr.error(response.statusMessage);
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err.toString());
+                    }
+                });
+            });
+            
+            // Clear form data
+            function clearFormData() {
+                notificationFormData[0].reset();
+            }
+            
+            // Get ddl username
+            function getDdlUsername() {
+                $.ajax({
+                    url: '/Notification/GetDdlUsername/',
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        $.each(response, function(k, v) {
+                            $('#username').append(`<option value="${v.username}">${v.username}</option>`);
+                        });
+                    }
+                });
+            }
+            getDdlUsername();
+        });
+    </script>
+}

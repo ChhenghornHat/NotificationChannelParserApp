@@ -6,7 +6,7 @@ namespace NotificationChannelParserApp.Models
     {
         [Key]
         public int Id { get; set; }
-        public string ConnectionId { get; set; } = null!;
-        public string Username { get; set; } = null!;
+        public string? ConnectionId { get; set; }
+        public string? Username { get; set; }
     }
 }

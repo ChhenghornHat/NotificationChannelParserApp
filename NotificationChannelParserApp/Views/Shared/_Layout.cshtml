@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @inject IHttpContextAccessor HttpContextAccessor;
+@{
+    var username = HttpContextAccessor.HttpContext?.Session.GetString("Username");
+}
 @await Html.PartialAsync("Sections/_Variables")
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed " dir="ltr" data-theme="theme-default" data-assets-path="../../assets/" data-template="vertical-menu-template">
@@ -31,7 +34,7 @@
 
             <!-- Content wrapper -->
             <div class="content-wrapper">
-                <input type="hidden" id="hfUsername" value="@HttpContextAccessor.HttpContext?.Session.GetString("Username")" />
+                <input type="hidden" id="hfUsername" value="@username" />
                 @RenderBody()
 
                 <!-- Include Footer -->

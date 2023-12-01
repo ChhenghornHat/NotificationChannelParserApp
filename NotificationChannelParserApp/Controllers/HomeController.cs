@@ -13,6 +13,7 @@ namespace NotificationChannelParserApp.Controllers
             _logger = logger;
         }
 
+        [Route("/dashboard")]
         public IActionResult Index()
         {
             var username = HttpContext.Session.GetString("Username");

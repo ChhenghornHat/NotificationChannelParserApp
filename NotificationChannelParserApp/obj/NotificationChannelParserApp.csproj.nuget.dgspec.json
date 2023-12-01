@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hat Chhenghorn\\source\\repos\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj": {}
+    "D:\\Web Developments\\Testing Program\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hat Chhenghorn\\source\\repos\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj": {
+    "D:\\Web Developments\\Testing Program\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hat Chhenghorn\\source\\repos\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj",
+        "projectUniqueName": "D:\\Web Developments\\Testing Program\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj",
         "projectName": "NotificationChannelParserApp",
-        "projectPath": "C:\\Users\\Hat Chhenghorn\\source\\repos\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj",
-        "packagesPath": "C:\\Users\\Hat Chhenghorn\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hat Chhenghorn\\source\\repos\\NotificationChannelParserApp\\NotificationChannelParserApp\\obj\\",
+        "projectPath": "D:\\Web Developments\\Testing Program\\NotificationChannelParserApp\\NotificationChannelParserApp\\NotificationChannelParserApp.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\Web Developments\\Testing Program\\NotificationChannelParserApp\\NotificationChannelParserApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Hat Chhenghorn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -88,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

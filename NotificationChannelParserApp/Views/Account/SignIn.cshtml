@@ -12,7 +12,7 @@
     <title>Login - @TempData.Peek("appName")</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="~/assets/img/favicon/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="~/assets/img/favicon/favicon.jpg"/>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -73,7 +73,7 @@
                     <h4 class="mb-2">Welcome to @TempData.Peek("appName")! 👋</h4>
                     <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-                    <form id="formAuthentication" asp-action="SignIn" class="mb-3" method="POST" autocomplete="off">
+                    <form id="formAuthentication" asp-action="Login" class="mb-3" method="POST" autocomplete="off">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-floating form-floating-outline mb-3">
                             <input type="text" class="form-control" id="username" name="Username" placeholder="Enter your username" autofocus/>

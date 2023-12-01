@@ -6,9 +6,10 @@ namespace NotificationChannelParserApp.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Username { get; set; } = null!;
-        public string Message { get; set; } = null!;
-        public string MessageType { get; set; } = null!;
+        public string? Username { get; set; }
+        public string? Message { get; set; }
+        public string? MessageType { get; set; }
+        public string? SendBy { get; set; }
         public DateTime NotificationDateTime { get; set; }
     }
 }

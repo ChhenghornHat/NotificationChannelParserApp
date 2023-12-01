@@ -12,6 +12,7 @@ namespace NotificationChannelParserApp.Controllers
             this.userRepo = userRepo;
         }
 
+        [Route("/")]
         public IActionResult SignIn()
         {
             var username = HttpContext.Session.GetString("Username");
@@ -25,17 +26,11 @@ namespace NotificationChannelParserApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(string username, string password)
+        public async Task<IActionResult> Login(string username, string password)
         {
             var userFromDb = await userRepo.GetUserDetails(username, password);
 
-            if (userFromDb == null)
-            {
-                ModelState.AddModelError("Login", "Invalid credentials");
-                return View();
-            }
-
-            HttpContext.Session.SetString("Username", userFromDb.Username);
+            HttpContext.Session.SetString("Username", userFromDb.Username!);
 
             return RedirectToAction("Index", "Home");
         }
